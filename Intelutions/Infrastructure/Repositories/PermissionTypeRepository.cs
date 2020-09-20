@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    class PermissionTypeRepository : IPermissionTypeRepository
+    public class PermissionTypeRepository : IPermissionTypeRepository
     {
         private readonly AppDbContext _context;
 

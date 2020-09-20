@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    class PermissionRepository : IPermissionRepository
+    public class PermissionRepository : IPermissionRepository
     {
         private readonly AppDbContext _context;
 
@@ -50,6 +50,9 @@ namespace Infrastructure.Repositories
         public async Task<bool> Update(Permission permission)
         {
             var currentPermission = await Get(permission.Id);
+            if (currentPermission == null)
+                return false;
+            
             currentPermission.EmployeeName = permission.EmployeeName;
             currentPermission.EmployeeLastName = permission.EmployeeLastName;
             currentPermission.PermissionDate = permission.PermissionDate;

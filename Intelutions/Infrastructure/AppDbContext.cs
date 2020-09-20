@@ -1,5 +1,4 @@
-﻿using System;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +15,29 @@ namespace Infrastructure
         {
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionTypeConfiguration());
+
+            FillDB(modelBuilder);
+        }
+
+        private void FillDB(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PermissionType>().HasData(
+                new PermissionType
+                {
+                    Id = 1,
+                    Description = "Enfermedad"
+                },
+                new PermissionType
+                {
+                    Id = 2,
+                    Description = "Diligencias"
+                },
+                new PermissionType
+                {
+                    Id = 3,
+                    Description = "Vacaciones"
+                }
+            );
         }
     }
 }
