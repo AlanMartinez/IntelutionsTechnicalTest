@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
 using AutoMapper;
@@ -30,13 +31,33 @@ namespace API.Controllers
             return Ok(permissionsDTO);
         }
 
-        [HttpPost]
-        public IActionResult PostPermission(PermissionDTO permissionDTO)
+        [HttpGet]
+        [Route("getPermission")]
+        public async Task<IActionResult> GetPermission(int id)
         {
-            var permission = _mapper.Map<Permission>(permissionDTO);
-            _permissionBusiness.Create(permission);
+            var permission = await _permissionBusiness.Get(id);
+            var permissionsDTO = _mapper.Map<PermissionDTO>(permission);
 
-            return Ok(permission);
+            return Ok(permissionsDTO);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostPermission(PermissionDTO permissionDTO)
+        {
+            try
+            {
+                var permission = _mapper.Map<Permission>(permissionDTO);
+                var resp = await _permissionBusiness.Create(permission);
+
+                return Ok(permission);
+            }
+            catch(Exception e)
+            {
+                var permissionResponse = _mapper.Map<ResponsePermissionDTO>(permissionDTO);
+                permissionResponse.Error = e.Message;
+
+                return Ok(permissionResponse);
+            }
         }
 
         [HttpPut]

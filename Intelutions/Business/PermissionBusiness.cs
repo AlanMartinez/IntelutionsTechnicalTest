@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Interfaces;
 using Domain.Entities;
@@ -9,14 +10,20 @@ namespace Business
     public class PermissionBusiness : IPermissionBusiness
     {
         private readonly IPermissionRepository _permissionRepository;
+        private readonly IPermissionTypeRepository _permissionTypeRepository;
 
-        public PermissionBusiness(IPermissionRepository permissionRepository)
+        public PermissionBusiness(IPermissionRepository permissionRepository, IPermissionTypeRepository permissionTypeRepository)
         {
             _permissionRepository = permissionRepository;
+            _permissionTypeRepository = permissionTypeRepository;
         }
 
         public async Task<Permission> Create(Permission permission)
         {
+            var permissionType = await _permissionTypeRepository.Get((int)permission.PermissionTypeId);
+            if (permissionType == null)
+                throw new Exception("El tipo de permiso no existe");
+
             return await _permissionRepository.Create(permission);
         }
 

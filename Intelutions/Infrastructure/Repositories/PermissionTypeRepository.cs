@@ -16,6 +16,12 @@ namespace Infrastructure.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public async Task<PermissionType> Get(int id)
+        {
+            var permissionType = await _context.PermissionTypes.FirstOrDefaultAsync(x => x.Id == id);
+            return permissionType;
+        }
+
         public async Task<IEnumerable<PermissionType>> GetAll()
         {
             var permissionsTypes = await _context.PermissionTypes.ToListAsync();

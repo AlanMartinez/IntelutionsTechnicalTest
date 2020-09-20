@@ -37,13 +37,13 @@ namespace Infrastructure.Repositories
 
         public async Task<Permission> Get(int id)
         {
-            var permission = await _context.Permissions.FirstOrDefaultAsync(x => x.Id == id);
+            var permission = await _context.Permissions.Include(x => x.PermissionType).FirstOrDefaultAsync(x => x.Id == id);
             return permission;
         }
 
         public async Task<IEnumerable<Permission>> GetAll()
         {
-            var permissions = await _context.Permissions.ToListAsync();
+            var permissions = await _context.Permissions.Include(x => x.PermissionType).ToListAsync();
             return permissions;
         }
 
